@@ -12,3 +12,7 @@ This is a python script which does the following:
 No scheduling features are in place, it is expected to run this script via a cron job from the host environment.
 
 Hashtags should be inserted in _all lowercase_.
+
+## Configuration
+
+A `config.py` file is expected. Copy from the `config.example.py` file and follow the instructions inside.
