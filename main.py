@@ -72,13 +72,17 @@ def grab_tweets():
     soup = BeautifulSoup(req.text, "html.parser")
 
     found_new = False
+    should_process = True
     links: dict[str, str] = {}
 
     try:
         with open(FILE_NAME, "rb") as file:
             links = pickle.load(file)
     except FileNotFoundError:
+        # Either first run or data corrupted
+        # Do _not_ spam the webhooks
         found_new = True
+        should_process = False
 
     for link_tags in reversed(soup.find_all("a", "tweet-link")):
         link = link_tags.get("href").replace("#m", "")
@@ -88,7 +92,8 @@ def grab_tweets():
         else:
             found_new = True
             links[snowflake] = link
-            process(link)
+            if should_process:
+                process(link)
 
     snowflakes = sorted(links.keys())
     while len(snowflakes) > TWEET_MEMORY_LIMIT:
