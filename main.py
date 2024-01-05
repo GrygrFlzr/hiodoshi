@@ -7,14 +7,16 @@ import pickle
 from time import time, sleep
 from httpx import get, post
 from bs4 import BeautifulSoup
-from config import hashtag_webhooks, FILE_NAME, TWEET_MEMORY_LIMIT, HASHTAG_SPAM_LIMIT, NITTER_INSTANCE
+from config import hashtag_webhooks, FILE_NAME, TWEET_MEMORY_LIMIT, HASHTAG_SPAM_LIMIT, NITTER_INSTANCE, IGNORE_TAGS
 
 NITTER_INSTANCE_SEARCH = f"https://{NITTER_INSTANCE}/search"
 hashtags = set(hashtag_webhooks.keys())
 COOKIES = {"replaceYouTube": "", "replaceReddit": "", "replaceTwitter": "twitter.com"}
+IGNORE_SEARCH = " ".join(IGNORE_TAGS)
+ART_SEARCH = " OR ".join(hashtags)
 PARAMS = {
     "f": "tweets",
-    "q": " OR ".join(hashtags),
+    "q": f"{IGNORE_SEARCH} {ART_SEARCH}",
     "f-media": "on",            # must include media
     "e-nativeretweets": "on",   # disable retweets
 }
@@ -99,4 +101,4 @@ def grab_tweets():
 
 
 if __name__ == "__main__":
-    grab_tweets()
+    print(f"{IGNORE_SEARCH} {ART_SEARCH}")
