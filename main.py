@@ -78,8 +78,8 @@ def grab_tweets():
     except FileNotFoundError:
         found_new = True
 
-    for raw_link in soup.find_all("a", "tweet-link"):
-        link = raw_link.get("href").replace("#m", "")
+    for link_tags in reversed(soup.find_all("a", "tweet-link")):
+        link = link_tags.get("href").replace("#m", "")
         snowflake = link[link.rfind("/") + 1 :]
         if snowflake in links:
             print(f"Skipping old tweet {snowflake}")
