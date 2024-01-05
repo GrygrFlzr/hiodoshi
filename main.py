@@ -101,4 +101,4 @@ def grab_tweets():
 
 
 if __name__ == "__main__":
-    print(f"{IGNORE_SEARCH} {ART_SEARCH}")
+    grab_tweets()
