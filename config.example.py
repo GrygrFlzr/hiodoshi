@@ -30,26 +30,24 @@ Domain of nitter instance to use
 NITTER_INSTANCE = "nitter.net"
 
 """
-Hashtags and cashtags to ignore
-All lowercase, begin with -
+Words to ignore
+Case insensitive
 """
-IGNORE_TAGS = [
-    "-#bilibilicomics",
-    "-#openseacollection",
-    "-#openseanfts",
-    "-#nftkid",
-    "-#nftnews",
-    "-#nftshills",
-    "-#nft買います",
-    "-#nftgiveaway",
-    "-#nftgiveaways",
-    "-#nftcommunity",
-    "-#nftartists",
-    "-#aiart",
-    "-#nft",
-    "-#crypto",
-    "-#solana",
-    "-#sol",
-    "-#fidescoin",
-    "-$fides",
+IGNORE_WORDS = [
+    "bilibilicomics",
+    "opensea",
+    "nftkid",
+    "nftnews",
+    "nftshill",
+    "nft買います",
+    "nftgiveaway",
+    "nftcommunity",
+    "nftartists",
+    "aiart",
+    "nft",
+    "crypto",
+    "#solana",
+    "#sol",
+    "#fidescoin",
+    "$fides",
 ]

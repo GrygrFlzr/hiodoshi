@@ -7,16 +7,15 @@ import pickle
 from time import time, sleep
 from httpx import get, post
 from bs4 import BeautifulSoup
-from config import hashtag_webhooks, FILE_NAME, TWEET_MEMORY_LIMIT, HASHTAG_SPAM_LIMIT, NITTER_INSTANCE, IGNORE_TAGS
+from config import hashtag_webhooks, FILE_NAME, TWEET_MEMORY_LIMIT, HASHTAG_SPAM_LIMIT, NITTER_INSTANCE, IGNORE_WORDS
 
 NITTER_INSTANCE_SEARCH = f"https://{NITTER_INSTANCE}/search"
 hashtags = set(hashtag_webhooks.keys())
 COOKIES = {"replaceYouTube": "", "replaceReddit": "", "replaceTwitter": "twitter.com"}
-IGNORE_SEARCH = " ".join(IGNORE_TAGS)
 ART_SEARCH = " OR ".join(hashtags)
 PARAMS = {
     "f": "tweets",
-    "q": f"{IGNORE_SEARCH} {ART_SEARCH}",
+    "q": ART_SEARCH,
     "f-media": "on",            # must include media
     "e-nativeretweets": "on",   # disable retweets
 }
@@ -37,12 +36,13 @@ def process(link=""):
     req = get(url=api_url, headers=HEADERS)
     res = json.loads(req.text)
     tweet_body = res["tweet"]["text"]
+    for word in IGNORE_WORDS:
+        if word.lower() in tweet_body.lower():
+            # skip as per config
+            print(f"Skipped by config: {res["tweet"]["author"]["screen_name"]}")
+            return
     if tweet_body.count("\n #") > HASHTAG_SPAM_LIMIT:
         # skip spammer
-        print(f"Likely spammer skipped: {res["tweet"]["author"]["screen_name"]}")
-        return
-    if "bilibilicomics" in tweet_body.lower():
-        # skip bili spam
         print(f"Likely spammer skipped: {res["tweet"]["author"]["screen_name"]}")
         return
     print(f"Processing {res["tweet"]["id"]}")
