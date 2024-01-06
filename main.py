@@ -56,7 +56,7 @@ def process(link=""):
         for webhook_url in server_webhook_urls:
             req = post(webhook_url, data=json.dumps(webhook_data), headers={"Content-Type": "application/json"})
             ratelimit_remaining = int(req.headers.get("x-ratelimit-remaining"))
-            ratelimited = ratelimit_remaining <= 0
+            ratelimited = ratelimit_remaining <= 1 # don't wait until 0
             if ratelimited:
                 ratelimit_reset = float(req.headers.get("x-ratelimit-reset"))
                 wait_seconds = ratelimit_reset - time() + 1
