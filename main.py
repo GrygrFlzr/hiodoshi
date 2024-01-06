@@ -41,6 +41,10 @@ def process(link=""):
         # skip spammer
         print(f"Likely spammer skipped: {res["tweet"]["author"]["screen_name"]}")
         return
+    if "bilibilicomics" in tweet_body.lower():
+        # skip bili spam
+        print(f"Likely spammer skipped: {res["tweet"]["author"]["screen_name"]}")
+        return
     print(f"Processing {res["tweet"]["id"]}")
     for hashtag in hashtags:
         if hashtag not in tweet_body.lower():
